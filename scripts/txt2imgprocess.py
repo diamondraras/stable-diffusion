@@ -29,6 +29,10 @@ safety_model_id = "CompVis/stable-diffusion-safety-checker"
 safety_feature_extractor = AutoFeatureExtractor.from_pretrained(safety_model_id)
 safety_checker = StableDiffusionSafetyChecker.from_pretrained(safety_model_id)
 
+config="configs/stable-diffusion/v1-inference.yaml"
+omega_conf = OmegaConf.load(f"{config}")
+instantiate_from_config(omega_conf.model)
+
 
 def chunk(it, size):
     it = iter(it)
@@ -108,7 +112,6 @@ def main(prompt):
     
     fixed_code=None
     scale=7.5
-    config="configs/stable-diffusion/v1-inference.yaml"
     from_file=False
     precision="autocast"
     ddim_eta=0.0
@@ -240,11 +243,8 @@ def main(prompt):
                     grid_count += 1
 
                 toc = time.time()
-    # print(img)
 
     return string_images
-    # print(f"Your samples are ready and waiting for you here: \n{outpath} \n"
-    #       f" \nEnjoy.")
 
 
 if __name__ == "__main__":
